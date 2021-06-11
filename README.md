@@ -117,7 +117,7 @@ const int MergePathOptions = 8;
 
 GPUMatrixMatrixMultiplyTraits  DefaultTraits(Threads, BlocksPerMP, NNZPerThread,
                                              InputElementsPerThreads, RetainElementsPerThreads,
-                                             MaxChunksToMerge, MaxChunksGeneralizedMerge);
+                                             MaxChunksToMerge, MaxChunksGeneralizedMerge, MergePathOptions);
 
 const bool Debug_Mode = true;
 DefaultTraits.preferLoadBalancing = true;
@@ -147,15 +147,28 @@ Note: `--expt-relaxed-constexpr` is required.
 
 
 ### Testing
-Todo, write how to test against cpu version.
+You can the output against a simple CPU version. (Matrix values, row offsets, column id's).
 
+Simply add the header
+```cpp 
+#include "GALATIC/include/TestSpGEMM.cuh"
+```
 
+and execute	
 
+```cpp
+TestSpGEMM(input_A_GPU, input_B_GPU, semiring, [=] (const Arith_SR::output_t &a, const Arith_SR::output_t &b) { return std::abs(a-b) < 0.01; }, DefaultTraits);
+```
+
+Default traits is the configuration traits, as defined above. 
+
+The lambda function is function which takes two of your output type, and returns true if they are equivalent, otherwise false. 
+
+Make sure your semiring functions are marked with `__host__`. Addditionally, if you are accessing datastructures outside the matrix, `cudaMallocManaged` is reccomended, as then both the CPU and GPU can access the memory using the same code. 
 
 ---
 ## Important Information
 
-# The below will be needed for performance tuning on semirings / adjustment for especially large sized types. - Richard
 
 AC-SpGEMM is highly configurable as can be seen with the traits in the `performTestCase`, these traits are implemented as template parameters.
 Hence, for all combinations used, the **respective instantiation must be present**.
@@ -174,6 +187,8 @@ bool called =
 			::call(Selection<MultiplyCall<DataType>>(call), scheduling_traits.Threads, scheduling_traits.BlocksPerMp, scheduling_traits.NNZPerThread, scheduling_traits.InputElementsPerThreads, scheduling_traits.RetainElementsPerThreads, scheduling_traits.MaxChunksToMerge, scheduling_traits.MaxChunksGeneralizedMerge, scheduling_traits.MergePathOptions, (int)Debug_Mode);
 ```
 This expanding template will instantiate variants of `MultiplyCall` with the parameters specified in `EnumOption<Start, End, Step>`, so each EnumOption describes all the possible values for a certain property and all different configurations will be instantiated (e.g. BlocksPerMP with `EnumOption<3, 4, 1,` will instantiate the template call with BlocksPerMP=3 and BlocksPerMP=4)
+
+These parametsers may require adjusting for optimal performance, or to just run if your semiring is especially large.
 
 ---
 # FAQ
