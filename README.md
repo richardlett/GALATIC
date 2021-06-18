@@ -7,7 +7,7 @@ This repository was forked from [AC-SpGEMM](https://github.com/GPUPeople/ACSpGEM
 This was developed/Tested with
 * Linux 4.12
 * CUDA compilation tools 11.1
-
+* A V100
 
 ---
 
@@ -52,7 +52,7 @@ struct SemiRing {
 
 Notice that multiplication has a left input type `T`, a right input type `U`, and an output type `V`. Addition has `V` as both an input and an output.
 
-An example follows where multiplication and addition are defined canoically using doubles.
+An example follows where multiplication and addition are defined canonically using doubles.
 
 The `__device__` annotation is required.  The `__host__` annotation is needed in if you would like to verify against a CPU SpGEMM implementaiton.
 
@@ -70,7 +70,7 @@ You may use the "Semiring" structure (e.g. `Arith_SR`) to hold data from outside
 
 As to be expected, only memory which is accesible from the GPU is valid. In addition, you should be careful as to not mutate anything such that data races could occur or that an order of operations becomes required.
 
-Use of constructors / destructors is not reccomended for your semiring struct. The destructor for this will be ran multiple times before multiplication is complete. Ideally the Semiring should be [trivally copyable](https://en.cppreference.com/w/cpp/named_req/TriviallyCopyable). Thus you must manually free resources your semiring uses (if any) after you are done.  Additionally, `T`/`U`/`V`  (input / output types) should also be trivially copyable (I need to follow up on this restriction).
+Use of constructors / destructors is not reccomended for your semiring struct. The destructor for this will be ran multiple times before multiplication is complete. Ideally the Semiring should be [trivally copyable](https://en.cppreference.com/w/cpp/named_req/TriviallyCopyable). Thus you must manually free resources your semiring uses (if any) after you are done.  Additionally, `T`/`U`/`V`  (input / output types) should also be trivially copyable.
 
 
 ### Performing Matrix Multiplication
@@ -117,7 +117,7 @@ const int MergePathOptions = 8;
 
 GPUMatrixMatrixMultiplyTraits  DefaultTraits(Threads, BlocksPerMP, NNZPerThread,
                                              InputElementsPerThreads, RetainElementsPerThreads,
-                                             MaxChunksToMerge, MaxChunksGeneralizedMerge);
+                                             MaxChunksToMerge, MaxChunksGeneralizedMerge, MergePathOptions);
 
 const bool Debug_Mode = true;
 DefaultTraits.preferLoadBalancing = true;
@@ -147,15 +147,29 @@ Note: `--expt-relaxed-constexpr` is required.
 
 
 ### Testing
-Todo, write how to test against cpu version.
+You can the output against a simple CPU version. (Matrix values, row offsets, column id's).
 
+Simply add the header
+```cpp 
+#include "GALATIC/include/TestSpGEMM.cuh"
+```
 
+and execute	
 
+```cpp
+TestSpGEMM(input_A_GPU, input_B_GPU, semiring, [=] (const Arith_SR::output_t &a, const Arith_SR::output_t &b) { return std::abs(a-b) < 0.01; }, DefaultTraits);
+```
+
+Default traits is the configuration traits, as 
+above. 
+
+The lambda function is function which takes two of your output type, and returns true if they are equivalent, otherwise false. 
+
+Make sure your semiring functions are marked with `__host__`. Addditionally, if you are accessing datastructures outside the matrix, `cudaMallocManaged` is reccomended, as then both the CPU and GPU can access the memory using the same code. 
 
 ---
 ## Important Information
 
-# The below will be needed for performance tuning on semirings / adjustment for especially large sized types. - Richard
 
 AC-SpGEMM is highly configurable as can be seen with the traits in the `performTestCase`, these traits are implemented as template parameters.
 Hence, for all combinations used, the **respective instantiation must be present**.
@@ -175,5 +189,8 @@ bool called =
 ```
 This expanding template will instantiate variants of `MultiplyCall` with the parameters specified in `EnumOption<Start, End, Step>`, so each EnumOption describes all the possible values for a certain property and all different configurations will be instantiated (e.g. BlocksPerMP with `EnumOption<3, 4, 1,` will instantiate the template call with BlocksPerMP=3 and BlocksPerMP=4)
 
+These parameters may require adjusting for optimal performance, or to just run if your semiring is especially large.
+
 ---
 # FAQ
+richardl@berkeley.edu
