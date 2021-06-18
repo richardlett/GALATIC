@@ -63,7 +63,6 @@
 #include "Transpose.h"
 #include "Compare.cuh"
 #include "CPU_SpGEMM.h"
-#include "ColorText.h"
 // CuSparse include
 //#include "cusparse/include/cuSparseMultiply.h"
 
@@ -193,10 +192,6 @@ void printCross()
 
 int main(int argc, char *argv[])
 {
-	
-    Color::Modifier green(Color::FG_GREEN);
-    Color::Modifier red(Color::FG_YELLOW);
-	Color::Modifier default_c(Color::FG_DEFAULT);
 
 
 	std::cout << "########## ac-SpGEMM ##########" << std::endl;
@@ -407,12 +402,11 @@ int main(int argc, char *argv[])
 
 			}
 
-				std::cout << ((checked  == coo_mat.nnz && coo_mat.nnz == out.nnz ) ? green : red )<< "Total errors: " << err_count <<std::endl;
+				std::cout << "Total errors: " << err_count <<std::endl;
 
 
 				std::cout << "NNZ correct / # of checked output/ total:  " <<  checked << "/" << coo_mat.nnz  << "/" << max(coo.nnz,out.nnz ) << std::endl;
 
-               std::cout << default_c;
 //
 //				if (!ACSpGEMM::Compare<MinRing::input_t>(d_result_mat_comp, d_result_mat, true))
 //				{

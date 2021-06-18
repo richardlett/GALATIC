@@ -1,7 +1,6 @@
 #include <algorithm>
 
 #include <vector>
-#include "ColorText.h"
 #include "CSR.cuh"
 #include "dCSR.cuh"
 
@@ -26,8 +25,6 @@
  void Mult_CPU( CSR<LEFT_T> &A,  CSR<RIGHT_T> &B, CSR<OUT_t>& C, SEMIRING_t& sr)
  {
      	
-    Color::Modifier blue(Color::FG_BLUE);
-	Color::Modifier default_c(Color::FG_DEFAULT);
 
      Vec<CSR_Tuple<OUT_t>> result = Vec<CSR_Tuple<OUT_t>>();
      Vec<uint64_t> row_starts = Vec<uint64_t>();
@@ -40,7 +37,7 @@
      for (uint64_t A_row_idx = 0; A_row_idx < A.rows; A_row_idx++)
      {
          if (A_row_idx*10 / A.rows > last_percent) {
-             std::cout << blue << "CPU Done%: " << A_row_idx*100 / A.rows <<  default_c <<std::endl;
+             std::cout  << "CPU Done%: " << A_row_idx*100 / A.rows  <<std::endl;
              last_percent = A_row_idx*10 / A.rows;
          }
          const uint64_t A_row_start =  A.row_offsets[A_row_idx];
