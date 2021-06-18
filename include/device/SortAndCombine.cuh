@@ -42,8 +42,6 @@
 #include <stdio.h>
 #include <cub/cub.cuh>
 
-
-#ifndef FOO 
 template<typename SORTINDEX_TYPE, typename VALUE_TYPE, uint32_t THREADS, uint32_t ELEMENTS_PER_THREAD>
 class SortAndCombine
 {
@@ -209,6 +207,3 @@ struct PathMergerOp
 		return res;
 	}
 };
-
-
-#endif

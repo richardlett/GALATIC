@@ -20,7 +20,7 @@
 
  template<typename SEMIRING_t,
           typename LEFT_T  = typename SEMIRING_t::leftInput_t,        // input type alias  for mul
-          typename RIGHT_T  = typename SEMIRING_t::rightInput_t,     // input type alias  for mul
+          typename RIGHT_T  = typename SEMIRING_t::rightInput_t,      // input type alias  for mul
           typename OUT_t = typename SEMIRING_t::output_t              // output type alias for mul
  >
  void Mult_CPU( CSR<LEFT_T> &A,  CSR<RIGHT_T> &B, CSR<OUT_t>& C, SEMIRING_t& sr)

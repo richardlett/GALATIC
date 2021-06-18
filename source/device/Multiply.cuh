@@ -76,19 +76,6 @@
 #include "../../include/execution_stats.h"
 #include "../../include/default_scheduling_traits.h"
 
-// static void HandleError( cudaError_t err,
-//                          const char *file,
-//                          int line ) {
-//     if (err != cudaSuccess) {
-//         printf( "%s in %s at line %d\n", cudaGetErrorString( err ),
-//                 file, line );
-//        throw std::exception();
-//     }
-// }
-// #define HANDLE_ERROR( err ) (HandleError( err, __FILE__, __LINE__ ))
-
-
-
 void startTimer(cudaEvent_t& start, CUstream stream = 0)
 {
 	HANDLE_ERROR(cudaEventRecord(start, stream));
@@ -857,86 +844,6 @@ namespace ACSpGEMM {
 	        void Multiply(const dCSR<typename SEMIRING_t::leftInput_t>& A, const dCSR<typename SEMIRING_t::rightInput_t>& B, dCSR<typename SEMIRING_t::output_t>& matOut, const GPUMatrixMatrixMultiplyTraits& scheduling_traits, ExecutionStats& exec_stats, bool DEBUG_MODE, SEMIRING_t semiring)
 	{
 		MultiplyCall<typename SEMIRING_t::leftInput_t,typename SEMIRING_t::rightInput_t,typename SEMIRING_t::output_t,typename SEMIRING_t::output_t, SEMIRING_t> call(A, B, matOut, scheduling_traits, exec_stats, semiring);
-	//	DefaultTraits(64, 4, 2,4,4,16,128)
-		//Threads, BlocksPerMP, NNZPerTread, InputPerThread, RetainElements, MaxChungsTo Merge, MaxChunGenrel, MergePathoption, Debug
-// DefaultTraits(128, 1, 1,2,2,8,512);
-//DefaultTraits(128, 1, 1,2,2,8,512);
-		// bool called = EnumOption<128, 128, 128,
-		//               EnumOption<1, 1, 1,
-		//               EnumOption<1, 1, 1,
-		//               EnumOption<2, 2, 1,
-		//               EnumOption<2, 2, 1,
-		//               EnumOption<8, 8, 8,
-		//               EnumOption<512, 512, 512,
-		//               EnumOption<8, 8, 8,
-		//               EnumOption<0, 1, 1>>>>>>>>>
-		// const int Threads = 256;
-		// const int BlocksPerMP = 2;
-		// const int NNZPerThread = 2;
-		// const int InputElementsPerThreads = 4;
-		// const int RetainElementsPerThreads = 4;
-		// const int MaxChunksToMerge = 16;
-		// const int MaxChunksGeneralizedMerge = 512; // MAX: 865
-		// const int MergePathOptions = 8;
-
-	// 		bool called = EnumOption<64, 64, 64,
-	// EnumOption<1, 1, 1,
-	// EnumOption<1, 1, 1,
-	// EnumOption<4, 4, 1,
-	// EnumOption<2, 2, 1,
-	// EnumOption<8, 8, 8,
-	// EnumOption<128, 128, 256,
-	// EnumOption<8, 8, 8,
-	// EnumOption<0, 1, 1>>>>>>>>>
-
-	// const int Threads = 256;
-	// const int BlocksPerMP = 3;
-	// const int NNZPerThread = 2;
-	// const int InputElementsPerThreads = 4;
-	// const int RetainElementsPerThreads = 4;
-	// const int MaxChunksToMerge = 16;
-	// const int MaxChunksGeneralizedMerge = 256; // MAX: 865
-	// const int MergePathOptions = 8;
-//	GPUMatrixMatrixMultiplyTraits  DefaultTraits(64, 1, 1,4,2,8,128);
-
-
-	// const int Threads = 64;
-	// const int BlocksPerMP = 1;
-	// const int NNZPerThread = 2;
-	// const int InputElementsPerThreads = 2;
-	// const int RetainElementsPerThreads = 1;
-	// const int MaxChunksToMerge = 16;
-	// const int MaxChunksGeneralizedMerge = 128; // MAX: 865
-	// const int MergePathOptions = 8;
-	// 	const int Threads = 64;
-	// const int BlocksPerMP = 1;
-	// const int NNZPerThread = 2;
-	// const int InputElementsPerThreads = 2;
-	// const int RetainElementsPerThreads = 1;
-	// const int MaxChunksToMerge = 64;
-	// const int MaxChunksGeneralizedMerge = 128; // MAX: 865
-	// const int MergePathOptions = 8;
-
-    
-   
-	// bool called = EnumOption<128, 128, 128,
-	// EnumOption<1, 1, 1,
-	// EnumOption<2, 2,1,
-	// EnumOption<2, 2, 2,
-	// EnumOption<1, 1, 1,
-	// EnumOption<16, 16, 8,
-	// EnumOption<512, 512, 128,
-	// EnumOption<8, 8, 8,
-	// EnumOption<1, 1, 1>>>>>>>>>
-		
-	 // const int Threads = 256;
-    // const int BlocksPerMP = 1;
-    // const int NNZPerThread = 2;
-    // const int InputElementsPerThreads = 2;
-    // const int RetainElementsPerThreads = 1;
-    // const int MaxChunksToMerge = 16;
-    // const int MaxChunksGeneralizedMerge = 256; // MAX: 865
-    // const int MergePathOptions = 8;
 
 	
 	bool called = EnumOption<128, 128, 256,

@@ -94,31 +94,5 @@ __global__ void d_compare(int in_rows, int in_cols, const uint32_t* __restrict r
 
 	return;
 }
-
-//namespace ACSpGEMM {
-//	template <typename DataType>
-//	bool Compare(const dCSR<DataType>& reference_mat, const dCSR<DataType>& compare_mat, bool compare_data)
-//	{
-//		int blockSize(256);
-//		int gridSize(divup<int>(reference_mat.rows + 1, blockSize));
-//		double epsilon = 0.1;
-//		uint32_t* verification, h_verification;
-//		cudaMalloc(&verification, sizeof(uint32_t));
-//		cudaMemset(verification, 0, sizeof(uint32_t));
-//
-//		d_compare<DataType> << <gridSize, blockSize >> > (reference_mat.rows, reference_mat.cols,
-//			reference_mat.row_offsets, reference_mat.col_ids, reference_mat.data,
-//			compare_mat.row_offsets, compare_mat.col_ids, compare_mat.data,
-//			compare_data, epsilon, verification);
-//
-//		cudaMemcpy(&h_verification, verification, sizeof(uint32_t), cudaMemcpyDeviceToHost);
-//		return (h_verification == 0);
-	//}
-////
-//	template bool Compare<float>(const dCSR<float>& reference_mat, const dCSR<float>& compare_mat, bool compare_data);
-//	template bool Compare<double>(const dCSR<double>& reference_mat, const dCSR<double>& compare_mat, bool compare_data);
-//    template bool Compare<uint32_t>( dCSR<uint32_t> const& reference_mat,  dCSR<uint32_t> const& compare_mat, bool compare_data);
-   // template<typename T> bool Compare<T>( dCSR<T> const& reference_mat,  dCSR<T> const& compare_mat, bool compare_data);
 };
-//template<typename DataType> bool Compare<DataType>( dCSR<DataType> const& reference_mat,  dCSR<DataType> const& compare_mat, bool compare_data);
 

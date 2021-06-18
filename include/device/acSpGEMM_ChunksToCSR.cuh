@@ -125,6 +125,3 @@ void AcSpGEMMKernels::h_copyChunks(void* const* __restrict chunks_pointers, cons
 	}
 	copyChunks<VALUE_TYPE, INDEX_TYPE, OFFSET_TYPE> <<<copyBlocksOnGPU, blockSize >>>(chunks_pointers, chunk_pointer_alloc, value_out, index_out, result_offets);
 }
-
-//	template void AcSpGEMMKernels::h_copyChunks<float, uint32_t, uint32_t> (void* const* __restrict chunks_pointers, const uint32_t* __restrict chunk_pointer_alloc, float * value_out, uint32_t * index_out, const uint32_t* __restrict result_offets);
-//	template void AcSpGEMMKernels::h_copyChunks<double, uint32_t, uint32_t>(void* const* __restrict chunks_pointers, const uint32_t* __restrict chunk_pointer_alloc, double * value_out, uint32_t * index_out, const uint32_t* __restrict result_offets);

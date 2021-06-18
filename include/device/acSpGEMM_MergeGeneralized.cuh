@@ -278,7 +278,7 @@ mergeSharedRowsGeneralized(const uint32_t* __restrict blockOffsets, const uint32
 			const INDEX_TYPE* pIndices;
 			Either<const RIGHT_t*, const OUT_t*> pValues;
 			int32_t numentries = pChunk->num_entries;
-			LEFT_T multiplier;// = SEMIRING_t::MultiplicativeIdentity();
+			LEFT_T multiplier;
 
 			smem.sort_keys[chunk_counter] = pChunk->sort_key;
 
@@ -560,8 +560,6 @@ mergeSharedRowsGeneralized(const uint32_t* __restrict blockOffsets, const uint32
 					const INDEX_TYPE* __restrict ip = smem.chunkIndices[smem.indexing[chunk[i]]] + smem.elementsInChunkConsumed[chunk[i]] - smem.current_path_elements[chunk[i]];
 					combIndex[i] = ip[element[i]];
 
-				//	Either<const IN_t* ,  const OUT_t* > dp;// = smem.chunkValues[smem.indexing[chunk[i]]] + smem.elementsInChunkConsumed[chunk[i]] - smem.current_path_elements[chunk[i]];
-
 					if ( smem.chunkValues[smem.indexing[chunk[i]]].isFirst()) {
 						const RIGHT_t* dp = smem.chunkValues[smem.indexing[chunk[i]]].valFirst() + smem.elementsInChunkConsumed[chunk[i]] - smem.current_path_elements[chunk[i]];
 						data[i] = semiring.multiply(smem.multiplier[smem.indexing[chunk[i]]], dp[element[i]]);
@@ -569,9 +567,7 @@ mergeSharedRowsGeneralized(const uint32_t* __restrict blockOffsets, const uint32
 					} else {
 						const OUT_t* dp = smem.chunkValues[smem.indexing[chunk[i]]].valSecond() + smem.elementsInChunkConsumed[chunk[i]] - smem.current_path_elements[chunk[i]];
 						data[i] = dp[element[i]];
-					}
-					
-             
+					}					
                 }
 				else
 				{

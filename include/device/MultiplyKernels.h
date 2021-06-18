@@ -104,10 +104,7 @@ struct Either {
 		result.tag = 1;
 		return result;
 	}
-
 	__device__ __host__ Either () {}
-
-
 };
 
 
