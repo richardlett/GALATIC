@@ -129,8 +129,8 @@ mergeSharedRowsMaxChunks(const uint32_t* __restrict blockOffsets, const uint32_t
 
 	constexpr const uint32_t LengthSamplesPerThread = ((MERGE_MAX_PATH_OPTIONS + 1)*MERGE_MAX_CHUNKS + THREADS - 1) / THREADS;
 	
-	constexpr bool problem  = LengthSamplesPerThread > 1;
-	static_assert(problem, "LengthSamplesPerThread must  be > 1");
+	constexpr bool problem  = LengthSamplesPerThread >= 1;
+	static_assert(problem, "LengthSamplesPerThread must  be >= 1");
 
 	using SampleSorter = cub::BlockRadixSort<INDEX_TYPE, THREADS, LengthSamplesPerThread, ushort2>;
 	using PathMergeScan = cub::BlockScan<PathEncoding, THREADS>;
