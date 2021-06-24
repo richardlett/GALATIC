@@ -35,6 +35,18 @@
 #include <algorithm>
 #include <math.h>
 #include <cstring>
+#include "COO.h"
+
+#include <stdint.h>
+#include <string>
+#include <fstream>
+#include <stdexcept>
+#include <iterator>
+#include <vector>
+#include <algorithm>
+#include <memory>
+#include <iostream>
+
 
 namespace GALATIC {
 template<typename T>
@@ -123,17 +135,6 @@ struct CSR
 };
 
 
-#include "COO.h"
-
-#include <stdint.h>
-#include <string>
-#include <fstream>
-#include <stdexcept>
-#include <iterator>
-#include <vector>
-#include <algorithm>
-#include <memory>
-#include <iostream>
 
 namespace {
     template<typename VALUE_TYPE>
