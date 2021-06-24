@@ -43,7 +43,7 @@
 #include <stdexcept>
 #include <iterator>
 #include <vector>
-
+namespace GALATIC {
 template<typename T>
 struct COO
 {
@@ -259,3 +259,4 @@ void spmv(DenseVector<T>& res, const COO<T>& m, const DenseVector<T>& v, bool tr
             res.data[m.row_ids[i]] += m.data[i] * v.data[m.col_ids[i]];
 }
 
+}
