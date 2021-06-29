@@ -50,7 +50,7 @@
 #include <intrin.h>
 #define LZCNT __lzcnt
 #else
-#include <x86intrin.h>
+//#include <x86intrin.h>
 #define LZCNT __builtin_clzll
 #endif
 
